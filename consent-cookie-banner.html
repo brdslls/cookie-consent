@@ -1,0 +1,67 @@
+<head>
+<script>
+  /** Set the consent state */
+  // establish dataLayer and gtag
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  // set default consent state or based in the localStorage
+  const storedConsent = localStorage.getItem('consentMode');
+  const defaultConsent = storedConsent ? JSON.parse(storedConsent) : {
+    'security_storage': 'granted',
+    'functionality_storage': 'granted',
+    'analytics_storage': 'denied', // GTM will send cookieless data
+    'personalization_storage': 'denied',
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied'
+  };
+  gtag('consent', 'default', defaultConsent);
+  /** Load GTM */
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-........');
+</script>
+<script src="consent-cookie-functions.js" async></script>
+</head>
+<body>
+  <!-- Load consent banner at top of page -->
+  <dialog class="dialog-container" id="cookie-dialog" aria-hidden="false" aria-labelledby="cookie-dialog-title" aria-describedby="cookie-dialog-description">
+    <p id="cookie-dialog-title"><strong style="font-size:larger">Manage cookies</strong></p>
+    <p id="cookie-dialog-description">Cookies are used to ensure the convenience of users of the site. You can configure which categories of cookies will be stored on your device, with the exception of the category "Technical (strictly necessary)", without which the site cannot function. You can read detailed information by <a href="#" target="_blank">going to the page "Cookie Policy"</a>.</p>
+    <form class="dialog-form" action="" method="get" onsubmit="event.preventDefault();customizedConsent(event)">
+      <p><strong>Technical</strong> (strictly necessary)<br><small>provide viewing of the site's content and access to functionality.</small></p>
+      <p>
+        <label class="dialog-label" for="necessary_consent"><input class="dialog-input" type="radio" name="necessary_consent" id="necessary_consent" value="on" checked> Accept</label>
+      </p>
+      <p><strong>Analytical</strong><br><small>allow you to store the history of visits to site pages without identifying users in order to improve the quality of its functioning. For example, to determine the most and least popular pages.</small></p>
+      <p>
+        <label class="dialog-label" for="analytics_consent_on"><input class="dialog-input" type="radio" name="analytics_consent" id="analytics_consent_on" value="on" checked> Accept</label>&nbsp;&nbsp;&nbsp;
+        <label class="dialog-label" for="analytics_consent_off"><input class="dialog-input" type="radio" name="analytics_consent" id="analytics_consent_off" value="off"> Reject</label>
+      </p>
+      <p><strong>Functional</strong><br><small>allow for a personalized experience of using the site and are installed in response to the actions of the personal data subject. For example, to save the choice of the language version of the site.</small></p>
+      <p>
+        <label class="dialog-label" for="preferences_consent_on"><input class="dialog-input" type="radio" name="preferences_consent" id="preferences_consent_on" value="on" checked> Accept</label>&nbsp;&nbsp;&nbsp;
+        <label class="dialog-label" for="preferences_consent_off"><input class="dialog-input" type="radio" name="preferences_consent" id="preferences_consent_off" value="off"> Reject</label>
+      </p>
+      <p><strong>Marketing</strong><br><small>allow you to offer the user advertising based on his interests.</small></p>
+      <p>
+        <label class="dialog-label" for="marketing_consent_on"><input class="dialog-input" type="radio" name="marketing_consent" id="marketing_consent_on" value="on" checked> Accept</label>&nbsp;&nbsp;&nbsp;
+        <label class="dialog-label" for="marketing_consent_off"><input class="dialog-input" type="radio" name="marketing_consent" id="marketing_consent_off" value="off"> Reject</label>
+      </p>
+      <button class="dialog-button button-accept" type="button" onclick="acceptConsent();this.closest('cookie-dialog').close()" autofocus>Accept all</button>
+      <button class="dialog-button button-custom" type="submit">Accept selected in settings</button>
+      <button class="dialog-button button-reject" type="button" onclick="rejectConsent();this.closest('cookie-dialog').close()">Reject optional</button>
+    </form>
+    <style>
+      /* modal dialog */
+      .dialog-container:not([open]){display:none}.dialog-container::backdrop{background-color:rgba(0, 0, 0, 0.5)}
+      /* focus */
+      .dialog-input:focus-visible, .dialog-button:focus-visible{outline:2px dotted #000}
+      /* buttons */
+      .dialog-button{color:white;font-size:large;border:none;padding:5px}
+      .dialog-button:hover{opacity:0.8}
+      .button-accept{background-color:seagreen}
+      .button-reject{background-color:indianred}
+      .button-custom{background-color:darkcyan}
+    </style>
+  </dialog>
+  <script>null===localStorage.getItem("consentMode")?document.getElementById("cookie-dialog").showModal():document.getElementById("cookie-dialog").remove();</script>
+</body>
