@@ -12,7 +12,7 @@ A general guide on how to add cookie consent settings to a website.
 
 2. **Identify the scripts that create these cookies:**
    - Manually, by determining which script or service generates each cookie.
-     - Eg see the [list of cookies used by Google services](https://support.google.com/analytics/answer/11397207) (Google Analytics, YouTube, Google Ads, etc.).
+     - Eg see the [list of cookies used by Google services](https://business.safety.google/adscookies/#:~:text=effectiveness%20of%20ads.-,Filter%20by,-%3A) (Google Analytics, YouTube, Google Ads, etc.).
      - If searching for “google/gpt” doesn’t reveal the script responsible for a specific cookie, use DevTools:
        1. Open **DevTools > Network**.
        2. Search for **Set-Cookie** (Shift+F).
