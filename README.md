@@ -48,5 +48,5 @@ A general guide on how to add cookie consent settings to a website.
    - Remove the original script from the website.
 
 ### III. Add a Consent Banner to the Website
-1. Add the [banner HTML](https://github.com/brdslls/consent-cookie/blob/master/insiconsent-cookie-banner.html) to the website.
-2. Include the [JavaScript functions](https://github.com/brdslls/consent-cookie/blob/master/insiconsent-cookie-functions.js).
+1. Add the [banner HTML](https://github.com/brdslls/consent-cookie/blob/main/consent-cookie-banner.html) to the website.
+2. Include the [JavaScript functions](https://github.com/brdslls/consent-cookie/blob/main/consent-cookie-functions.js).
