@@ -20,6 +20,34 @@ function setConsent(consent) {
   gtag('event', 'consentUpdated');
   // save preferences to localStorage so they don't have to consent every time they visit the website
   localStorage.setItem('consentMode', JSON.stringify(consentMode));
+  if(!consent.analytics || !consent.preferences){
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      // Trim whitespace from the beginning of the cookie string
+      const cookie = cookies[i].trim();
+      // Get the cookie name (everything before the first '=')
+      const cookieName = cookie.split('=')[0];
+      if (
+        (!consent.analytics && (
+          cookieName.startsWith('abc') ||
+          cookieName === 'abc'
+        ))
+        ||
+        (!consent.preferences && (
+          cookieName.startsWith('abc') ||
+          cookieName === 'abc'
+        ))
+      ) {
+        // Delete the cookie by setting its expiration date to the past
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        // Also try to delete the cookie with domain specification
+        const domain = window.location.hostname;
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain};`;
+        // Try with domain prefixed with a dot (for subdomains)
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${domain};`;
+      }
+    }
+  }
 }
 function acceptConsent() {
   // update the consent according to the Accept All option on the banner
