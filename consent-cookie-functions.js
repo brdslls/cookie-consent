@@ -18,6 +18,24 @@ function setConsent(consent) {
   gtag('consent', 'update', consentMode);
   // send custom event to trigger early denied custom tags in GTM
   gtag('event', 'consentUpdated');
+
+  /* handle additional functionality depending on consent scripts on the first visit and immediately after a choice change; subsequent loads are handled in html */
+  if(consentMode.analytics_storage !== 'granted'){window.ga = function() {};}
+  const map = document.getElementById('map');
+  if(map != null){
+    if(consentMode.personalization_storage === 'granted'){
+      const mapApi = document.createElement('script');
+      mapApi.src = 'https://api.maps.google.com/';
+      mapApi.onload = function() {
+        maps.ready(mapsInit); /* window.mapsInit is created in the body, e.g. function mapsInit(){...} */
+      };
+      document.head.append(mapApi);
+    }else{
+      const mapError = 'Personalization cookie is required.';
+      map && (map.textContent = mapError);
+    }
+  }
+
   // save preferences to localStorage so they don't have to consent every time they visit the website
   localStorage.setItem('consentMode', JSON.stringify(consentMode));
   if(!consent.analytics || !consent.preferences){
